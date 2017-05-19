@@ -39,3 +39,50 @@ public class TriggerBatAndFetchOutput {
 
 Version.bat :
 java -version
+
+
+---------
+public class SingleJava {
+
+    public static void main(String[] args) throws IOException {
+
+        SingleJava singleJava=new SingleJava();
+
+        System.out.println(singleJava.getExeData("hello.exe"));
+
+    }
+
+    public String getExeData(String exeName) throws IOException {
+
+        Runtime rt = Runtime.getRuntime();
+        //String[] commands = {"Version.bat", "-get t"};
+        String[] commands = {exeName, "-get t"};
+        Process proc = rt.exec(commands);
+
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+        BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+
+        String capturedInput = "";
+        String finalCapturedInput = "";
+        while ((capturedInput = stdInput.readLine()) != null) {
+            finalCapturedInput = capturedInput + finalCapturedInput;
+        }
+
+        String capturedError = "";
+        String finalCapturedError = "";
+        while ((capturedError = stdError.readLine()) != null) {
+            finalCapturedError = capturedError + finalCapturedError;
+
+        }
+
+        if ("".equals(finalCapturedError)) { //If no error send the input
+
+            return finalCapturedInput;
+        }
+        else {
+            return finalCapturedError;
+        }
+    }
+}
