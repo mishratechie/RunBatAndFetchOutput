@@ -35,8 +35,18 @@ public class RunPsExec {
 
         String capturedInput = "";
         String finalCapturedInput = "";
+        boolean flagStartCapture = false;
         while ((capturedInput = stdInput.readLine()) != null) {
-            finalCapturedInput = finalCapturedInput+"\n"+capturedInput;
+            
+            if (capturedInput.contains("Sysinternals")) {
+                flagStartCapture = true;
+                continue;
+
+            }
+
+            if (flagStartCapture) {
+                finalCapturedInput = finalCapturedInput + "\n" + capturedInput;
+            }
         }
 
         String capturedError = "";
@@ -46,7 +56,7 @@ public class RunPsExec {
 
         }
 
-        if ("".equals(finalCapturedError)) {
+         if (finalCapturedError.equals(null) || "".equals(finalCapturedError) || !finalCapturedInput.equals(null)) { //If no error and input not null send the input
 
             return finalCapturedInput;
         }
